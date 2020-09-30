@@ -10,7 +10,6 @@ from numpy import load
 
 
 def analyze_files_seq(path_packages, path_ind, path_fe, path_folder, options, classifier, name_f):
-
     jvm.start(packages=path_packages)
 
     ind_f = load(path_ind)
@@ -74,8 +73,8 @@ def analyze_files_seq(path_packages, path_ind, path_fe, path_folder, options, cl
 
     summary_result.to_csv(path_folder+name_f+"summary.csv", index=False)  # save the fileve
 
-def analyze_one_file(path_packages, path_file, path_folder, options, classifier, fold, random, i):
-    print("Class")
+def analyze_one_file(path_packages, path_file, path_folder, options, classifier, fold, random, name):
+    print("start weka")
     jvm.start(packages=path_packages)
     cls = Classifier(classname=classifier, options=weka.core.classes.split_options(options))
     results = []
@@ -96,7 +95,7 @@ def analyze_one_file(path_packages, path_file, path_folder, options, classifier,
     d_results['percent_incorrect'].append(evl.percent_incorrect)
     d_results['confusion_matrix'].append(evl.matrix())  # Generates the confusion matrix.
 
-    with open(str(i)+"_results.txt", 'w') as f:
+    with open(str(name)+"_results.txt", 'w') as f:
         for item in results:
             f.write("%s\n\n" % item)
 

@@ -59,7 +59,7 @@ def generate_by_all_files(path_file_csv, name_file):
 
 #/home/tatalessap/PycharmProjects/muse2_tesi/res_eti_256row/
 def generate_by_one_file(path_file_csv, name_file):
-    bb=[]
+    bb = []
     dic = {}
     # the size of complete_matrix changes
     dim0 = 0
@@ -108,9 +108,9 @@ def get_complete_matrix(list_ch, data):
     for el in list_ch:
         x = np.array(data_attentive[el])
 
-        fig, (ax1, ax2) = plt.subplots(nrows=2)
+        fig, (ax1, ax2, ax3) = plt.subplots(nrows=3)
 
-        plt.close(fig)
+
 
         # do the spectrogram
         # sP the spectrogram
@@ -119,7 +119,7 @@ def get_complete_matrix(list_ch, data):
 
         # first
         i = 0
-        sP, freq, t, im = ax2.specgram(x, Fs=256, window=np.blackman(M=256), NFFT=256)
+        sP, freq, t, im = ax1.specgram(x, Fs=256, window=np.blackman(M=256), NFFT=256)
 
         spec_a, freq_ = steps(sP, freq)
 
@@ -132,6 +132,12 @@ def get_complete_matrix(list_ch, data):
 
         #
         feature_matrix = get_matrix_feature(spec_a, spec_d)
+
+        plt.close(fig)
+
+        #sP, freq, t, im = ax3.specgram(feature_matrix)
+
+        #plt.show()
 
         vector_classes = get_classes(spec_a.shape[1], spec_d.shape[1])
 
