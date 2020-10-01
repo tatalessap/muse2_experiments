@@ -55,7 +55,7 @@ def generate_by_all_files(path_file_csv, name_file):
 
     big_matrix.to_csv(name_file + '.csv', index=False)  # save the file
 
-    np.savez('index_' + name_file+'.csv', np.array(indexes))
+    np.savez('index_' + name_file, np.array(indexes))
 
 #/home/tatalessap/PycharmProjects/muse2_tesi/res_eti_256row/
 def generate_by_one_file(path_file_csv, name_file):
@@ -85,7 +85,7 @@ def generate_by_one_file(path_file_csv, name_file):
 
     index_file = 0
     for big_matrix in bb:
-        big_matrix.to_csv('/home/tatalessap/PycharmProjects/muse2_tesi/uni_features/'+ name_file + str(index_file) + '.csv', index=False)  # save the file
+        big_matrix.to_csv('uni_features/'+ name_file + str(index_file) + '.csv', index=False)  # save the file
         index_file = index_file + 1
 
 """
@@ -108,18 +108,17 @@ def get_complete_matrix(list_ch, data):
     for el in list_ch:
         x = np.array(data_attentive[el])
 
-        fig, (ax1, ax2, ax3) = plt.subplots(nrows=3)
+        cmap = plt.get_cmap('viridis')
 
+        cmap.set_under(color='k', alpha=None)
 
-
-        # do the spectrogram
-        # sP the spectrogram
-        # freq, the vector of the frequencies
-        # t, the vector of the time
+        fig, (ax1, ax2) = plt.subplots(nrows=2, figsize=(20, 10))
 
         # first
         i = 0
         sP, freq, t, im = ax1.specgram(x, Fs=256, window=np.blackman(M=256), NFFT=256)
+
+        ax1.set(title='attentive')
 
         spec_a, freq_ = steps(sP, freq)
 
@@ -130,14 +129,16 @@ def get_complete_matrix(list_ch, data):
         sP, freq, t, im = ax2.specgram(x, Fs=256, window=np.blackman(M=256), NFFT=256)
         spec_d, freq_ = steps(sP, freq)
 
+        ax2.set(title='distracted')
         #
         feature_matrix = get_matrix_feature(spec_a, spec_d)
 
-        plt.close(fig)
+        # plt.close(fig)
 
-        #sP, freq, t, im = ax3.specgram(feature_matrix)
+        fig.colorbar(im, ax=ax1)
+        fig.colorbar(im, ax=ax2)
 
-        #plt.show()
+        plt.show()
 
         vector_classes = get_classes(spec_a.shape[1], spec_d.shape[1])
 
