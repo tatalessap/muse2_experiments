@@ -1,7 +1,12 @@
-import pandas as pd
 import numpy as np
 import os
 from sklearn.decomposition import FastICA, PCA
+import datetime
+import pandas as pd
+import datetime
+import os
+import matplotlib
+import matplotlib.pyplot as plt
 
 """
 spectrum block average and return of new spectrum 
@@ -52,6 +57,20 @@ def filter_with_ica( X ):
 
     return eeg_restored
 
+def con_data(el):
+    el = datetime.datetime.strptime(el,'%H:%M:%S.%f')
+    return el
 
+def convert_to_time_delta(x):
+    return datetime.timedelta(hours=x.hour, minutes=x.minute, seconds=x.second, microseconds=x.microsecond)
+
+def create_list_dataset(path_tes):
+    files = os.listdir(path_tes)
+    for el in files:
+        if 'csv' not in el:
+            files.remove(el)
+
+    dataSets = [pd.read_csv(path_tes + str(el)) for el in files]
+    return dataSets
 
 
